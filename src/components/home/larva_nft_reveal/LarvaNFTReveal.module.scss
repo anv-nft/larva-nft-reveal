@@ -1,0 +1,89 @@
+.reveal_nft {
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  height: 100vh;
+  padding: 2rem 3rem;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  .content_box{
+    text-align: center;
+    img{
+      width: 100%;
+      max-width: 659px;
+      margin: 10% 0;
+    }
+    form{
+      .input_box{
+        display: flex;
+        max-width: 30rem;
+        margin: 3rem auto 0;
+        background: #fff;
+        padding: 1rem 8rem;
+        border-radius: 10px;
+        font-size: 1.2rem;
+        font-family: 'Poppins' , sans-serif !important;
+        font-weight: 600;
+        align-items: center;
+        color: #000;
+        label{
+          margin: 0;
+        }
+        input{
+          width: 100%;
+          background: none;
+          border: 0;
+          outline: none;
+          color: #000;
+          text-align: center;
+          font-family: 'Poppins' , sans-serif !important;
+          font-weight: 600;
+        }
+      }
+    }
+  }
+
+}
+.reveal_btn {
+  background: #b756ff;
+  border: 0;
+  overflow: hidden;
+  width: 20rem;
+  height: 5rem;
+  outline: none;
+  border-radius: 10rem;
+  color: #fff;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 1.5rem;
+  margin: 0 auto;
+}
+.alert_msg{
+  font-family: 'Poppins';
+  font-weight: 700;
+  font-size: 1.8rem;
+}
+.alert_box{
+  justify-content: center!important;
+  .alert_btn{
+    display: inline-block;
+    text-align: center;
+    font-family: 'Poppins';
+    font-size: 1.5rem;
+    background: #ccc;
+    color: #000;
+    border-radius: 1rem;
+    border: none;
+    padding: 5px 10px;
+  }
+  .mint_btn {
+    padding: 5px 10px;
+    font-weight: 400;
+    font-size: 1.5rem;
+  }
+}
+

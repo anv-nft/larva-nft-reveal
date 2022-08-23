@@ -1,0 +1,15 @@
+.header{
+  width: 100%;
+  background: #070721;
+  display : flex;
+  justify-content: space-between;
+  align-items: center;
+  @media screen and (max-width: 500px) {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .logo_img{
+    max-height: 33px;
+    margin: 1rem 3rem;
+  }
+}
