@@ -30,6 +30,8 @@ function ConnectWallet(props) {
         <>
             <div className={styles.button_box}>
                 {props.accounts && props.accounts.length > 0 && props.isConnected === 'YES' ? (
+                    // <button onClick={() => confirmLogout()}
+                    //         className={styles.wallet_button}>{props.accounts.replace(props.accounts.substr(6, 26),'...')}</button>
                     <button onClick={() => confirmLogout()}
                             className={styles.wallet_button}>{props.accounts}</button>
                 ) : (

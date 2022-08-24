@@ -5,7 +5,7 @@ export default function Home(props) {
 
     return (
         <>
-            <LarvaNFTReveal accounts={props.accounts} apiToken={props.apiToken} isConnected={props.isConnected}
+            <LarvaNFTReveal accounts={props.accounts} networkId={props.networkId} apiToken={props.apiToken} isConnected={props.isConnected}
                             handleKaikasConnect={() => props.handleKaikasConnect()} handleLogout={() => props.handleLogout()}/>
         </>
     );

@@ -5,6 +5,8 @@ import LoadingModal from "../../loading_modal/LoadingModal"
 import styles from "./LarvaNFTReveal.module.scss"
 import backgroundImg from "../../../assets/images/body_bg.jpg";
 import titleImg from "../../../assets/images/title1.png";
+import {PAUSABLE_NFT} from "../../../utils/abi/PAUSABLE_NFT";
+import {contracts} from "../../../utils/web3/contracts";
 import Caver from "caver-js";
 
 function LarvaNFTReveal(props) {
@@ -18,12 +20,13 @@ function LarvaNFTReveal(props) {
 
     const tokenIdInput = useRef();
     const [tokenId, setTokenId] = useState("");
-
     useEffect(() => {
 
     }, [props.accounts]);
 
+    async function reveal() {
 
+    }
     async function nftMintCount() {
         try {
             const result = await POST(`/api/v1/special/mycount`, '', props.apiToken);
@@ -39,7 +42,32 @@ function LarvaNFTReveal(props) {
     }
 
     async function approveWallet() {
+        const provider = window['klaytn'];
+        const caver = new Caver(provider);
 
+        const gasPrice = await caver.rpc.klay.getGasPrice();
+        // const currentNftContract = new caver.klay.Contract(PAUSABLE_NFT, contracts['current_nft_contract'][props.networkId]);
+        // const gasLimitApprove = await currentNftContract.methods.approve(contracts['reveal_nft_contract'][props.networkId], 4).estimateGas({
+        //     from: props.accounts[0],
+        // })
+        // const approve = await currentNftContract.methods.approve(contracts['reveal_nft_contract'][props.networkId],4).send({
+        //     from: props.accounts[0],
+        //     gas: gasLimitApprove,
+        //     gasPrice : gasPrice ,
+        // });
+        // console.log(approve);
+        const revealNftContract = new caver.klay.Contract(PAUSABLE_NFT, contracts['reveal_nft_contract'][props.networkId]);
+        console.log(revealNftContract);
+        const gasLimitApprove2 = await revealNftContract.methods.reveal(4).estimateGas({
+            from: props.accounts[0],
+        })
+        const reveal = await revealNftContract.methods.reveal(4).send({
+            from: props.accounts[0],
+            gas: gasLimitApprove2,
+            gasPrice : gasPrice ,
+        });
+        console.log(reveal);
+        // console.log(gasLimitApprove);
     }
 
     const numberCheck = (e) => {
@@ -79,6 +107,9 @@ function LarvaNFTReveal(props) {
             <section className={styles.reveal_nft}
                      style={{background: `url(${backgroundImg}) no-repeat center center fixed`}}>
                 <div className={styles.content_box}>
+                    <div>
+                        <button className={styles.reveal_btn} onClick={() => approveWallet()}> Approve</button>
+                    </div>
                     <div>
                         <img src={titleImg}/>
                     </div>

@@ -81,17 +81,17 @@ function Index() {
 
                 const accounts = await window.klaytn.enable();
                 const account = accounts[0]
-                if(!isTestNet){
-                    if(window.klaytn.networkVersion !== 8217){
-                        alert('지갑을 메인넷으로 전환해주세요.');
-                        throw 'error';
-                    }
-                }
+                // if(!isTestNet){
+                //     if(window.klaytn.networkVersion !== 8217){
+                //         alert('지갑을 메인넷으로 전환해주세요.');
+                //         throw 'error';
+                //     }
+                // }
 
                 const token = localStorage.getItem('aniverse_token');
                 if(token === null){
                     //토큰생성
-                    const res = await GET(`/api/v1/auth/reveal/${account}/uuid`);
+                    const res = await GET(`/api/v1/auth/larva_reveal/${account}/uuid`);
                     // sign
                     const message = res.uuid;
                     const provider = window['klaytn'];
@@ -100,7 +100,7 @@ function Index() {
                     await caver.klay.sign(message, account).then(async (message)=>{
                         // get JWT
                         // jwt = await requestSignin(address, signedMessage);
-                        await POST(`/api/v1/auth/reveal/signin`, {
+                        await POST(`/api/v1/auth/larva_reveal/signin`, {
                             address: account,
                             message
                         }).then((sign) => {
