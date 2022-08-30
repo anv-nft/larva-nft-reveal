@@ -4,8 +4,7 @@ import klayIcon from "../../assets/images/icon/icon_klay.png";
 function ConnectWallet(props) {
 
     const [isKaikasInstalled, setKaikasInstalled] = useState(false);
-
-
+    const shortAddress = props.accounts.toString().replace(props.accounts.toString().substring(5, 37),'.....');
     function handleKaikas() {
 
         if (isKaikasWalletInstalled()) {
@@ -30,10 +29,8 @@ function ConnectWallet(props) {
         <>
             <div className={styles.button_box}>
                 {props.accounts && props.accounts.length > 0 && props.isConnected === 'YES' ? (
-                    // <button onClick={() => confirmLogout()}
-                    //         className={styles.wallet_button}>{props.accounts.replace(props.accounts.substr(6, 26),'...')}</button>
                     <button onClick={() => confirmLogout()}
-                            className={styles.wallet_button}>{props.accounts}</button>
+                            className={styles.wallet_button} title={props.accounts}>{shortAddress}</button>
                 ) : (
                     <button onClick={() => handleKaikas()} className={styles.wallet_button}><img src={klayIcon}/>Connect
                         Wallet</button>
