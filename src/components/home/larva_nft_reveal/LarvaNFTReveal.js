@@ -32,26 +32,33 @@ function LarvaNFTReveal(props) {
 
     function tokenIdCheck() {
         if (tokenIdInput.current.value == "") {
-            alert("토큰 ID를 입력해주세요.");
-            return tokenIdInput.current.focus();
+            setAlerts("Please enter your token ID.");
+            setShowAlertModal(true);
+            tokenIdInput.current.focus()
+            return false;
         }
+        return true;
     }
 
     async function approveCheck() {
-        tokenIdCheck();
+        if (!tokenIdCheck()) {
+            return false;
+        }
+        ;
         const approveAddress = await currentNftContract.methods.getApproved(tokenId).call().then(e => {
             return e;
         });
         return approveAddress
     }
+
     // 테스트용 민트
     // async function mint() {
     //
-    //     const gasLimit = await currentNftContract.methods.mint(props.accounts[0], 7).estimateGas({
+    //     const gasLimit = await currentNftContract.methods.mint(props.accounts[0], 22).estimateGas({
     //         from: props.accounts[0],
     //     });
     //     const gasPrice = await caver.rpc.klay.getGasPrice();
-    //     const mint = await currentNftContract.methods.mint(props.accounts[0], 7).send({
+    //     const mint = await currentNftContract.methods.mint(props.accounts[0], 22).send({
     //         from: props.accounts[0],
     //         gas: gasLimit,
     //         gasPrice,
@@ -61,28 +68,27 @@ function LarvaNFTReveal(props) {
     async function approveWallet() {
         try {
             const approveAddress = await approveCheck();
-            console.log(REVEAL_NFT_CONTRACT);
-            console.log(approveAddress.toLowerCase());
-            if (REVEAL_NFT_CONTRACT == approveAddress.toLowerCase()) {
+            if (REVEAL_NFT_CONTRACT == approveAddress.toString().toLowerCase()) {
                 setApproveStatus(true);
             } else {
                 const gasLimit = await currentNftContract.methods.approve(REVEAL_NFT_CONTRACT, tokenId).estimateGas({
                     from: props.accounts[0],
                 })
-                console.log(currentNftContract);
-                console.log(gasLimit);
-                console.log(tokenId);
                 const gasPrice = await caver.rpc.klay.getGasPrice();
                 const approve = await currentNftContract.methods.approve(REVEAL_NFT_CONTRACT, tokenId).send({
                     from: props.accounts[0],
                     gas: gasLimit,
                     gasPrice,
                 });
+                setApproveStatus(true);
                 console.log(approve);
             }
         } catch (e) {
             console.log(e);
-            alert('토큰을 확인해주세요.');
+            setAlerts("Please check the tokenID");
+            setShowAlertModal(true);
+            return false
+
         }
         return false
     }
@@ -96,37 +102,46 @@ function LarvaNFTReveal(props) {
 
     async function nftReveal() {
         setShowLoading(true);
+        let reveal;
+        let alertMsg = `Token ID ${tokenId} Reveal Success`; // 에러메세지
+        let revealStatus = false; // 리빌 상태
         try {
-            // const mintResult = await POST(`/api/v1/special/mint`, '', props.apiToken);
-            // if (mintResult.result === 'success') {
-            // 성공시
             const gasLimit = await revealNftContract.methods.reveal(tokenId).estimateGas({
                 from: props.accounts[0],
             })
             const gasPrice = await caver.rpc.klay.getGasPrice();
-            const reveal = await revealNftContract.methods.reveal(tokenId).send({
+            reveal = await revealNftContract.methods.reveal(tokenId).send({
                 from: props.accounts[0],
                 gas: gasLimit,
                 gasPrice,
             });
-            console.log(reveal);
-            setAlerts(`Token ID ${tokenId} Reveal Success`);
-            setShowAlertModal(true);
-            // } else {
-            // 실패시
-            //     if (mintResult.error !== {}) {
-            //         setAlerts(mintResult.error['_message']);
-            //     } else {
-            //         setAlerts("Reveal Fail ");
-            //     }
-            //     setShowAlertModal(true);
-            // }
+            console.log(reveal); // 리빌 결과값
+            revealStatus = true;
         } catch (e) {
+            console.log(e);
             setAlerts("Reveal Fail ");
-            setShowAlertModal(true);
         }
+        // 리빌이 성공하였을때
+        if (revealStatus) {
+            try {
+                const mintResult = await POST(`/api/v1/larvaReveal/save`, {
+                    tokenId,
+                    txHash: reveal.transactionHash
+                }, props.apiToken);
+                console.log(mintResult)
+                if (mintResult.result === 'error') {
+                    throw new Error(mintResult.error);
+                }
+            } catch (e) {
+                console.log(e);
+                setAlerts(`${alertMsg}\n(klaytn 네트워크 상황에 따라 민팅이 지연될 수 있습니다.)`);
+            }
+        }
+        setShowAlertModal(true);
+        setTokenId("");
         setShowRevealModal(false);
         setShowLoading(false);
+        return true;
     }
 
     return (
@@ -135,7 +150,7 @@ function LarvaNFTReveal(props) {
                      style={{background: `url(${backgroundImg}) no-repeat center center fixed`}}>
                 <div className={styles.content_box}>
                     <div>
-                        {/*<button onClick={() => approveCheck()} className={styles.reveal_btn}>approveCheck!</button>*/}
+                        {/*<button onClick={() => mint()} className={styles.reveal_btn}>mint!</button>*/}
                         <img src={titleImg}/>
                     </div>
                     {props.accounts && props.accounts.length > 0 && props.isConnected === 'YES' ? (
@@ -166,9 +181,7 @@ function LarvaNFTReveal(props) {
                     </div>
                 </Modal.Body>
                 <Modal.Footer className={styles.alert_box}>
-                    <button variant="" onClick={() => setShowAlertModal(false)} className={styles.alert_btn}
-                            size="lg"
-                            block>
+                    <button variant="" onClick={() => setShowAlertModal(false)} className={styles.alert_btn}>
                         Close
                     </button>
                 </Modal.Footer>
@@ -182,7 +195,7 @@ function LarvaNFTReveal(props) {
                     </div>
                 </Modal.Body>
                 <Modal.Footer className={styles.alert_box}>
-                    <button onClick={() => nftReveal()} className={styles.alert_btn} style="background:#B756FF">
+                    <button onClick={() => nftReveal()} className={`${styles.alert_btn} ${styles.point_color}`}>
                         Reveal
                     </button>
                     <button onClick={() => setShowRevealModal(false)} className={styles.alert_btn}>
