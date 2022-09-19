@@ -7,6 +7,7 @@
   padding: 2rem 3rem;
   display: flex;
   justify-content: center;
+  align-items: center;
   flex-wrap: wrap;
 
   .content_box {
@@ -14,36 +15,41 @@
 
     img {
       width: 100%;
-      max-width: 659px;
+      max-width: 408px;
       margin: 10% 0;
     }
 
     .input_box {
+      max-width: 450px;
+      margin-top: 10%;
       display: flex;
-      max-width: 30rem;
-      margin: 3rem auto 0;
-      background: #fff;
-      padding: 1rem 8rem;
       border-radius: 10px;
-      font-size: 1.2rem;
+      font-size: 1.5rem;
       font-family: 'Poppins', sans-serif !important;
       font-weight: 600;
-      align-items: center;
-      color: #000;
+      align-items: end;
+      color: #FFF;
 
       span {
-        margin: 0;
+        padding: 1.5rem 3rem ;
+        margin: 0 1rem 0 0;
+        background: none;
+        border: 2px solid #FFF;
       }
 
       input {
-        width: 100%;
-        background: none;
         border: 0;
+        border-bottom: 2px solid #FFF;
+        background: none;
+        padding-bottom: 1rem;
+        width: 100%;
         outline: none;
         color: #000;
         text-align: center;
         font-family: 'Poppins', sans-serif !important;
         font-weight: 600;
+        font-size: 2rem;
+        color: #FFF;
       }
     }
   }
@@ -51,17 +57,17 @@
 }
 
 .reveal_btn {
-  background: #b756ff;
+  background: #ffea00;
   border: 0;
   overflow: hidden;
   width: 20rem;
   height: 5rem;
   outline: none;
   border-radius: 10rem;
-  color: #fff;
+  color: #000;
   text-align: center;
   text-transform: uppercase;
-  font-weight: bold;
+  font-weight: 900;
   font-size: 1.5rem;
   margin: 0 auto;
 }
@@ -95,4 +101,4 @@
   }
 }
 
-.point_color{background: #b756ff!important;color:#FFF!important;}
+.point_color{background: #ffea00!important;color:#FFF!important;}

@@ -4,7 +4,7 @@ import {Modal} from 'react-bootstrap';
 import LoadingModal from "../../loading_modal/LoadingModal"
 import styles from "./LarvaNFTReveal.module.scss"
 import backgroundImg from "../../../assets/images/body_bg.jpg";
-import titleImg from "../../../assets/images/title1.png";
+import titleImg from "../../../assets/images/mv_title_reveal.png";
 import {PAUSABLE_NFT} from "../../../utils/abi/PAUSABLE_NFT";
 import {contracts} from "../../../utils/web3/contracts";
 import Caver from "caver-js";
@@ -26,6 +26,7 @@ function LarvaNFTReveal(props) {
     const REVEAL_NFT_CONTRACT = contracts['reveal_nft_contract'][props.networkId];
     const currentNftContract = new caver.klay.Contract(PAUSABLE_NFT, CURRENT_NFT_CONTRACT);
     const revealNftContract = new caver.klay.Contract(PAUSABLE_NFT, REVEAL_NFT_CONTRACT);
+    const testContract = new caver.klay.Contract(PAUSABLE_NFT, "0x31dac7ebd191e9f54e2831d26d5acdbf51bbd913");
     useEffect(() => {
         setApproveStatus(false);
     }, [tokenId]);
@@ -54,17 +55,34 @@ function LarvaNFTReveal(props) {
     // 테스트용 민트
     // async function mint() {
     //
-    //     const gasLimit = await currentNftContract.methods.mint(props.accounts[0], 22).estimateGas({
+    //     const gasLimit = await currentNftContract.methods.mint(props.accounts[0], 26).estimateGas({
     //         from: props.accounts[0],
     //     });
+    //     console.log(gasLimit);
     //     const gasPrice = await caver.rpc.klay.getGasPrice();
-    //     const mint = await currentNftContract.methods.mint(props.accounts[0], 22).send({
+        // const mint = await currentNftContract.methods.mint(props.accounts[0], 26).send({
+        //     from: props.accounts[0],
+        //     gas: gasLimit,
+        //     gasPrice,
+        // });
+    // }
+    // 스테이킹 테스트용 민트
+    // async function mint() {
+    //     console.log(provider);
+    //     console.log(testContract);
+    //     console.log(props.accounts[0]);
+    //     const gasLimit = await testContract.methods.mintWithTokenURI("0xECB5FF74587750a500c2DdAd0F4FB327f4D0eCDa", 0xd,"https://metadata-store.klaytnapi.com/1f5d655e-3529-df24-5f0a-65824feec987/0001.json").estimateGas({
+    //         from: props.accounts[0],
+    //     });
+    //     console.log(gasLimit);
+    //     const gasPrice = await caver.rpc.klay.getGasPrice();
+    //     console.log(gasPrice);
+    //     const mint = await testContract.methods.mintWithTokenURI("0xECB5FF74587750a500c2DdAd0F4FB327f4D0eCDa", 13,"https://metadata-store.klaytnapi.com/1f5d655e-3529-df24-5f0a-65824feec987/0001.json").send({
     //         from: props.accounts[0],
     //         gas: gasLimit,
     //         gasPrice,
     //     });
     // }
-
     async function approveWallet() {
         try {
             const approveAddress = await approveCheck();
@@ -150,19 +168,19 @@ function LarvaNFTReveal(props) {
                      style={{background: `url(${backgroundImg}) no-repeat center center fixed`}}>
                 <div className={styles.content_box}>
                     <div>
-                        {/*<button onClick={() => mint()} className={styles.reveal_btn}>mint!</button>*/}
+                        <button onClick={() => mint()} className={styles.reveal_btn}>mint!</button>
                         <img src={titleImg}/>
                     </div>
                     {props.accounts && props.accounts.length > 0 && props.isConnected === 'YES' ? (
                         approveStatus === false ? (
-                            <button onClick={() => approveWallet()} className={styles.reveal_btn}>APPROVE!</button>
+                            <button onClick={() => approveWallet()} className={styles.reveal_btn}>APPROVE</button>
                         ) : (
                             <button onClick={() => setShowRevealModal(true)}
                                     className={styles.reveal_btn}>EXCHANGE!</button>
                         )
                     ) : (
                         <button onClick={() => props.handleKaikasConnect()}
-                                className={styles.reveal_btn}>APPROVE!</button>
+                                className={styles.reveal_btn}>APPROVE</button>
                     )}
 
                     <label className={styles.input_box}>

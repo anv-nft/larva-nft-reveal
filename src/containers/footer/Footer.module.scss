@@ -1,22 +1,7 @@
 .footer{
-  background: #1b1e21;
-  color: #FFF;
-  padding: 5rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  @media screen and (max-width: 1000px) {
-    padding: 3rem;
-    flex-wrap: wrap;
-    justify-content: center;
-    div{
-      text-align: center;
-      padding-bottom: 1rem;
-      width: 100%;
-    }
-  }
-  a {
-    text-decoration: none;
-    color: #FFF;
-  }
+  position: absolute;
+  bottom: 50px;
+  width: 100%;
+  color: #4f4f4f;
+  text-align: center;
 }
