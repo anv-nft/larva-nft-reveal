@@ -1,4 +1,4 @@
-const isTestNet = true;
+const isTestNet = false;
 
 
 module.exports = {
