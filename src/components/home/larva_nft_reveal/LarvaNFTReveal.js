@@ -54,17 +54,23 @@ function LarvaNFTReveal(props) {
 
     // 테스트용 민트
     // async function mint() {
-    //
-    //     const gasLimit = await currentNftContract.methods.mint(props.accounts[0], 26).estimateGas({
+    //     for(let i = 27; i <= 47; i++){
+    //         const gasLimit = await currentNftContract.methods.mint(props.accounts[0], i).estimateGas({
+    //             from: props.accounts[0],
+    //         });
+    //         console.log(gasLimit);
+    //         const gasPrice = await caver.rpc.klay.getGasPrice();
+    //         await currentNftContract.methods.mint(props.accounts[0], i).send({
+    //             from: props.accounts[0],
+    //             gas: gasLimit,
+    //             gasPrice,
+    //         });
+    //     }
+    //     const mint = await currentNftContract.methods.mint(props.accounts[0], 26).send({
     //         from: props.accounts[0],
+    //         gas: gasLimit,
+    //         gasPrice,
     //     });
-    //     console.log(gasLimit);
-    //     const gasPrice = await caver.rpc.klay.getGasPrice();
-        // const mint = await currentNftContract.methods.mint(props.accounts[0], 26).send({
-        //     from: props.accounts[0],
-        //     gas: gasLimit,
-        //     gasPrice,
-        // });
     // }
     // 스테이킹 테스트용 민트
     // async function mint() {
@@ -168,7 +174,7 @@ function LarvaNFTReveal(props) {
                      style={{background: `url(${backgroundImg}) no-repeat center center fixed`}}>
                 <div className={styles.content_box}>
                     <div>
-                        <button onClick={() => mint()} className={styles.reveal_btn}>mint!</button>
+                        {/*<button onClick={() => mint()} className={styles.reveal_btn}>mint!</button>*/}
                         <img src={titleImg}/>
                     </div>
                     {props.accounts && props.accounts.length > 0 && props.isConnected === 'YES' ? (
