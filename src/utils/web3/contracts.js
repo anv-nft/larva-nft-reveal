@@ -1,8 +1,3 @@
-const supported_networks = [
-    1001, 8217
-]
-
-
 const contracts = {
     current_nft_contract: {
         1001: "0x6a0320be3b86ec319462703c9b9bfd109c33a8c9",  // klaytn testnet

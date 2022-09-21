@@ -32,7 +32,7 @@ function ConnectWallet(props) {
                     <button onClick={() => confirmLogout()}
                             className={styles.wallet_button} title={props.accounts}>{shortAddress}</button>
                 ) : (
-                    <button onClick={() => handleKaikas()} className={styles.wallet_button}><img src={klayIcon}/>Connect
+                    <button onClick={() => handleKaikas()} className={styles.wallet_button}><img src={klayIcon} alt="klayIcon"/>Connect
                         Wallet</button>
                 )
                 }

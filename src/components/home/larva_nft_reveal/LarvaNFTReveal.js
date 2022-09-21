@@ -26,13 +26,12 @@ function LarvaNFTReveal(props) {
     const REVEAL_NFT_CONTRACT = contracts['reveal_nft_contract'][props.networkId];
     const currentNftContract = new caver.klay.Contract(PAUSABLE_NFT, CURRENT_NFT_CONTRACT);
     const revealNftContract = new caver.klay.Contract(PAUSABLE_NFT, REVEAL_NFT_CONTRACT);
-    const testContract = new caver.klay.Contract(PAUSABLE_NFT, "0x31dac7ebd191e9f54e2831d26d5acdbf51bbd913");
     useEffect(() => {
         setApproveStatus(false);
     }, [tokenId]);
 
     function tokenIdCheck() {
-        if (tokenIdInput.current.value == "") {
+        if (tokenIdInput.current.value === "") {
             setAlerts("Please enter your token ID.");
             setShowAlertModal(true);
             tokenIdInput.current.focus()
@@ -54,7 +53,7 @@ function LarvaNFTReveal(props) {
     async function approveWallet() {
         try {
             const approveAddress = await approveCheck();
-            if (REVEAL_NFT_CONTRACT == approveAddress.toString().toLowerCase()) {
+            if (REVEAL_NFT_CONTRACT === approveAddress.toString().toLowerCase()) {
                 setApproveStatus(true);
             } else {
                 const gasLimit = await currentNftContract.methods.approve(REVEAL_NFT_CONTRACT, tokenId).estimateGas({
@@ -136,7 +135,7 @@ function LarvaNFTReveal(props) {
                      style={{background: `url(${backgroundImg}) no-repeat center center fixed;background-size: cover`}}>
                 <div className={styles.content_box}>
                     <div>
-                        <img src={titleImg}/>
+                        <img src={titleImg} alt="Reveal Larva AniverseNFT"/>
                     </div>
                     {props.accounts && props.accounts.length > 0 && props.isConnected === 'YES' ? (
                         approveStatus === false ? (

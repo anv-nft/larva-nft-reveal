@@ -37,13 +37,13 @@ function Index() {
             return;
         }
         if (!active) {
-            logout();
+            await logout();
         }
         // 새고로침시 로그아웃 되는 로직개선
         if (account) {
             const storeAddress = store.getState().wallet.address;
-            if (storeAddress != account.toLowerCase()) {
-                logout();
+            if (storeAddress !== account.toLowerCase()) {
+                await logout();
             }
         }
     }, [active, account]);
@@ -81,12 +81,12 @@ function Index() {
 
                 const accounts = await window.klaytn.enable();
                 const account = accounts[0]
-                // if(!isTestNet){
-                //     if(window.klaytn.networkVersion !== 8217){
-                //         alert('지갑을 메인넷으로 전환해주세요.');
-                //         throw 'error';
-                //     }
-                // }
+                if(!isTestNet){
+                    if(window.klaytn.networkVersion !== 8217){
+                        alert('지갑을 메인넷으로 전환해주세요.');
+                        throw 'error';
+                    }
+                }
 
                 const token = localStorage.getItem('aniverse_token');
                 if(token === null){
