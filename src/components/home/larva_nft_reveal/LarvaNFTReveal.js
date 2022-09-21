@@ -171,7 +171,7 @@ function LarvaNFTReveal(props) {
     return (
         <>
             <section className={styles.reveal_nft}
-                     style={{background: `url(${backgroundImg}) no-repeat center center fixed`}}>
+                     style={{background: `url(${backgroundImg}) no-repeat center center fixed;background-size: cover`}}>
                 <div className={styles.content_box}>
                     <div>
                         {/*<button onClick={() => mint()} className={styles.reveal_btn}>mint!</button>*/}
