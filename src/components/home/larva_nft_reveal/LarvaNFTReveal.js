@@ -51,44 +51,6 @@ function LarvaNFTReveal(props) {
         });
         return approveAddress
     }
-
-    // 테스트용 민트
-    // async function mint() {
-    //     for(let i = 27; i <= 47; i++){
-    //         const gasLimit = await currentNftContract.methods.mint(props.accounts[0], i).estimateGas({
-    //             from: props.accounts[0],
-    //         });
-    //         console.log(gasLimit);
-    //         const gasPrice = await caver.rpc.klay.getGasPrice();
-    //         await currentNftContract.methods.mint(props.accounts[0], i).send({
-    //             from: props.accounts[0],
-    //             gas: gasLimit,
-    //             gasPrice,
-    //         });
-    //     }
-    //     const mint = await currentNftContract.methods.mint(props.accounts[0], 26).send({
-    //         from: props.accounts[0],
-    //         gas: gasLimit,
-    //         gasPrice,
-    //     });
-    // }
-    // 스테이킹 테스트용 민트
-    // async function mint() {
-    //     console.log(provider);
-    //     console.log(testContract);
-    //     console.log(props.accounts[0]);
-    //     const gasLimit = await testContract.methods.mintWithTokenURI("0xECB5FF74587750a500c2DdAd0F4FB327f4D0eCDa", 0xd,"https://metadata-store.klaytnapi.com/1f5d655e-3529-df24-5f0a-65824feec987/0001.json").estimateGas({
-    //         from: props.accounts[0],
-    //     });
-    //     console.log(gasLimit);
-    //     const gasPrice = await caver.rpc.klay.getGasPrice();
-    //     console.log(gasPrice);
-    //     const mint = await testContract.methods.mintWithTokenURI("0xECB5FF74587750a500c2DdAd0F4FB327f4D0eCDa", 13,"https://metadata-store.klaytnapi.com/1f5d655e-3529-df24-5f0a-65824feec987/0001.json").send({
-    //         from: props.accounts[0],
-    //         gas: gasLimit,
-    //         gasPrice,
-    //     });
-    // }
     async function approveWallet() {
         try {
             const approveAddress = await approveCheck();
@@ -174,7 +136,6 @@ function LarvaNFTReveal(props) {
                      style={{background: `url(${backgroundImg}) no-repeat center center fixed;background-size: cover`}}>
                 <div className={styles.content_box}>
                     <div>
-                        {/*<button onClick={() => mint()} className={styles.reveal_btn}>mint!</button>*/}
                         <img src={titleImg}/>
                     </div>
                     {props.accounts && props.accounts.length > 0 && props.isConnected === 'YES' ? (
