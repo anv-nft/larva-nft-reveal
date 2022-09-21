@@ -132,7 +132,7 @@ function LarvaNFTReveal(props) {
     return (
         <>
             <section className={styles.reveal_nft}
-                     style={{background: `url(${backgroundImg}) no-repeat center center fixed;background-size: cover`}}>
+                     style={{background: `url(${backgroundImg}) no-repeat center center fixed`}}>
                 <div className={styles.content_box}>
                     <div>
                         <img src={titleImg} alt="Reveal Larva AniverseNFT"/>
