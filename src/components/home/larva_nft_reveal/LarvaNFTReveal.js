@@ -6,6 +6,7 @@ import styles from "./LarvaNFTReveal.module.scss"
 import backgroundImg from "../../../assets/images/body_bg.jpg";
 import titleImg from "../../../assets/images/mv_title_reveal.png";
 import {PAUSABLE_NFT} from "../../../utils/abi/PAUSABLE_NFT";
+import {REVEAL_ABI} from "../../../utils/abi/REVEAL_ABI";
 import {contracts} from "../../../utils/web3/contracts";
 import Caver from "caver-js";
 
@@ -22,10 +23,12 @@ function LarvaNFTReveal(props) {
     const [tokenId, setTokenId] = useState("");
     const provider = window['klaytn'];
     const caver = new Caver(provider);
-    const CURRENT_NFT_CONTRACT = contracts['current_nft_contract'][props.networkId];
-    const REVEAL_NFT_CONTRACT = contracts['reveal_nft_contract'][props.networkId];
-    const currentNftContract = new caver.klay.Contract(PAUSABLE_NFT, CURRENT_NFT_CONTRACT);
-    const revealNftContract = new caver.klay.Contract(PAUSABLE_NFT, REVEAL_NFT_CONTRACT);
+    const CURRENT_NFT_CONTRACT_ADDRESS = contracts['current_nft_contract'][props.networkId];
+    const REVEAL_CONTRACT_ADDRESS = contracts['reveal_contract'][props.networkId];
+    // const REVEAL_NFT_CONTRACT_ADDRESS = contracts['reveal_nft_contract'][props.networkId];
+    const currentNftContract = new caver.klay.Contract(PAUSABLE_NFT, CURRENT_NFT_CONTRACT_ADDRESS);
+    const revealContract = new caver.klay.Contract(REVEAL_ABI, REVEAL_CONTRACT_ADDRESS);
+    // const revealNftContract = new caver.klay.Contract(PAUSABLE_NFT, REVEAL_NFT_CONTRACT_ADDRESS);
     useEffect(() => {
         setApproveStatus(false);
     }, [tokenId]);
@@ -44,7 +47,6 @@ function LarvaNFTReveal(props) {
         if (!tokenIdCheck()) {
             return false;
         }
-        ;
         const approveAddress = await currentNftContract.methods.getApproved(tokenId).call().then(e => {
             return e;
         });
@@ -53,14 +55,14 @@ function LarvaNFTReveal(props) {
     async function approveWallet() {
         try {
             const approveAddress = await approveCheck();
-            if (REVEAL_NFT_CONTRACT === approveAddress.toString().toLowerCase()) {
+            if (REVEAL_CONTRACT_ADDRESS === approveAddress.toString().toLowerCase()) {
                 setApproveStatus(true);
             } else {
-                const gasLimit = await currentNftContract.methods.approve(REVEAL_NFT_CONTRACT, tokenId).estimateGas({
+                const gasLimit = await currentNftContract.methods.approve(REVEAL_CONTRACT_ADDRESS, tokenId).estimateGas({
                     from: props.accounts[0],
                 })
                 const gasPrice = await caver.rpc.klay.getGasPrice();
-                const approve = await currentNftContract.methods.approve(REVEAL_NFT_CONTRACT, tokenId).send({
+                const approve = await currentNftContract.methods.approve(REVEAL_CONTRACT_ADDRESS, tokenId).send({
                     from: props.accounts[0],
                     gas: gasLimit,
                     gasPrice,
@@ -91,11 +93,11 @@ function LarvaNFTReveal(props) {
         let alertMsg = `Token ID ${tokenId} Reveal Success`; // 에러메세지
         let revealStatus = false; // 리빌 상태
         try {
-            const gasLimit = await revealNftContract.methods.reveal(tokenId).estimateGas({
+            const gasLimit = await revealContract.methods.revealToken(CURRENT_NFT_CONTRACT_ADDRESS, tokenId).estimateGas({
                 from: props.accounts[0],
             })
             const gasPrice = await caver.rpc.klay.getGasPrice();
-            reveal = await revealNftContract.methods.reveal(tokenId).send({
+            reveal = await revealContract.methods.revealToken(CURRENT_NFT_CONTRACT_ADDRESS, tokenId).send({
                 from: props.accounts[0],
                 gas: gasLimit,
                 gasPrice,
@@ -156,8 +158,22 @@ function LarvaNFTReveal(props) {
                     </label>
                 </div>
             </section>
+            {/*팝업 모달*/}
+            <Modal centered size="lg" show={showAlertModal}
+                   onHide={() => setShowAlertModal(false)}>
+                <Modal.Body>
+                    <div className="text-center mt-5">
+                        <p className={styles.alert_msg}> {alerts}</p>
+                    </div>
+                </Modal.Body>
+                <Modal.Footer className={styles.alert_box}>
+                    <button variant="" onClick={() => setShowAlertModal(false)} className={styles.alert_btn}>
+                        Close
+                    </button>
+                </Modal.Footer>
+            </Modal>
             {/*알림창 모달*/}
-            <Modal centered size="xs" show={showAlertModal}
+            <Modal centered show={showAlertModal}
                    onHide={() => setShowAlertModal(false)}>
                 <Modal.Body>
                     <div className="text-center mt-5">
@@ -171,7 +187,7 @@ function LarvaNFTReveal(props) {
                 </Modal.Footer>
             </Modal>
             {/*리빌확인 모달*/}
-            <Modal centered size="xs" show={showRevealModal}
+            <Modal centered size="lg" show={showRevealModal}
                    onHide={() => setShowRevealModal(false)}>
                 <Modal.Body>
                     <div className="text-center mt-5">
