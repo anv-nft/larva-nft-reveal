@@ -199,7 +199,7 @@ function LarvaNFTReveal(props) {
                         </Row>
                     </Container>
                 </Modal.Header>
-                <Modal.Body scrollable>
+                <Modal.Body>
                     <Container>
                         <Row>
                             <Col xs={9} md={6}>

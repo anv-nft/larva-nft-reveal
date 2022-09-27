@@ -81,12 +81,12 @@ function Index() {
 
                 const accounts = await window.klaytn.enable();
                 const account = accounts[0]
-                // if(!isTestNet){
-                //     if(window.klaytn.networkVersion !== 8217){
-                //         alert('지갑을 메인넷으로 전환해주세요.');
-                //         throw 'error';
-                //     }
-                // }
+                if(!isTestNet){
+                    if(window.klaytn.networkVersion !== 8217){
+                        alert('Please switch your wallet to the mainnet.');
+                        throw 'error';
+                    }
+                }
 
                 const token = localStorage.getItem('aniverse_token');
                 if(token === null){
@@ -138,7 +138,6 @@ function Index() {
     }
 
     async function logout() {
-        console.log('logout');
         setConnectWallet("NO");
         window.localStorage.setItem("isConnected", "NO");
         window.localStorage.removeItem("aniverse_token");

@@ -12,7 +12,6 @@ import { Web3Provider } from "@ethersproject/providers";
 
 store.subscribe(throttle(() => {
   saveState(store.getState());
-  console.log(store.getState());
 }, 1000));
 function getLibrary(provider) {
 	const library = new Web3Provider(provider, "any");
