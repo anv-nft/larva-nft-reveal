@@ -127,7 +127,7 @@ function LarvaNFTReveal(props) {
                 }
             } catch (e) {
                 console.log(e);
-                setAlerts(`${alertMsg}\n(klaytn 네트워크 상황에 따라 민팅이 지연될 수 있습니다.)`);
+                setAlerts(`${alertMsg}`);
             }
         }
         setShowAlertModal(true);
@@ -186,7 +186,7 @@ function LarvaNFTReveal(props) {
             {/*팝업 모달*/}
             <Modal centered size="lg" show={showPopupModal}
                    onHide={() => setShowPopupModal(false)} backdrop="static"
-                   keyboard={false}>
+                   keyboard={false} dialogClassName="modal-90w">
                 <Modal.Header>
                     <Container>
                         <Row>
@@ -203,7 +203,7 @@ function LarvaNFTReveal(props) {
                     <Container>
                         <Row>
                             <Col xs={9} md={6}>
-                                <div className="text-left mt-5">
+                                <div className="text-left">
                                     <p className={styles.popup_msg}>
                                         라바 NEW PFP NFT로 교환하신 이후, 기존의 라바 NFT는 자동 소각됩니다.<br/>
                                         이와 동시에 라바 스테이킹 서비스에서 자동으로 예치 해제되며,<br/>
@@ -225,7 +225,7 @@ function LarvaNFTReveal(props) {
                                 </div>
                             </Col>
                             <Col xs={9} md={6}>
-                                <div className="text-left mt-5">
+                                <div className="text-left">
                                     <p className={styles.popup_msg}>
                                         After exchanging for Larva NEW PFP NFT, the existing Larva NFT will be
                                         automatically burned.<br/>

@@ -1,3 +1,10 @@
 .modal-content{
     border-radius: 3rem;
 }
+.modal-90w{
+    width: 80%;
+    max-width: none!important;
+}
+.modal-90w .container{
+    max-width: none!important;
+}
