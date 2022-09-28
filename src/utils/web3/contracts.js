@@ -9,7 +9,7 @@ const contracts = {
     },
     reveal_nft_contract: {
         1001: "0x051ccd21cf8f60926e071904c6e164497a7ef472",  // klaytn testnet
-        8217: "0xc0ed656ff9050a2a79681fc3f4ba9e816b1e9a98",  // klaytn mainnet
+        8217: "0x7acd7af154c4747c41318154711a5a3cc95e6f28",  // klaytn mainnet
     },
 };
 
