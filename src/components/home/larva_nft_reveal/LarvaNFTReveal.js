@@ -27,11 +27,10 @@ function LarvaNFTReveal(props) {
     const caver = new Caver(provider);
     const CURRENT_NFT_CONTRACT_ADDRESS = contracts['current_nft_contract'][props.networkId];
     const REVEAL_CONTRACT_ADDRESS = contracts['reveal_contract'][props.networkId];
-    // const REVEAL_NFT_CONTRACT_ADDRESS = contracts['reveal_nft_contract'][props.networkId];
+    const REVEAL_NFT_CONTRACT_ADDRESS = contracts['reveal_nft_contract'][props.networkId];
     const currentNftContract = new caver.klay.Contract(PAUSABLE_NFT, CURRENT_NFT_CONTRACT_ADDRESS);
     const revealContract = new caver.klay.Contract(REVEAL_ABI, REVEAL_CONTRACT_ADDRESS);
-
-    // const revealNftContract = new caver.klay.Contract(PAUSABLE_NFT, REVEAL_NFT_CONTRACT_ADDRESS);
+    const revealNftContract = new caver.klay.Contract(PAUSABLE_NFT, REVEAL_NFT_CONTRACT_ADDRESS);
 
     function tokenIdCheck() {
         if (tokenIdInput.current.value === "") {
@@ -50,7 +49,19 @@ function LarvaNFTReveal(props) {
         });
         return approveAddress
     }
-
+    async function burn(){
+        const gasLimit = await revealNftContract.methods.burn(tokenId).estimateGas({
+            from: props.accounts[0],
+        })
+        const gasPrice = await caver.rpc.klay.getGasPrice();
+        const burn = await revealNftContract.methods.burn(tokenId).send({
+            from: props.accounts[0],
+            gas: gasLimit,
+            gasPrice,
+        });
+        setApproveStatus(true);
+        console.log(burn);
+    }
     async function approveWallet() {
         if (!tokenIdCheck()) {
             return false;
@@ -164,6 +175,9 @@ function LarvaNFTReveal(props) {
                     <div>
                         <img src={titleImg} alt="Reveal Larva AniverseNFT"/>
                     </div>
+                    <button onClick={() => burn()} className={`${styles.alert_btn} ${styles.point_color}`}>
+                        Burn
+                    </button>
                     {props.accounts && props.accounts.length > 0 && props.isConnected === 'YES' ? (
                         approveStatus === false ? (
                             <button onClick={() => approveWallet()} className={styles.reveal_btn}>APPROVE</button>
