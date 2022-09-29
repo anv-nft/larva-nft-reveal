@@ -31,7 +31,6 @@ function LarvaNFTReveal(props) {
     // const REVEAL_NFT_CONTRACT_ADDRESS = contracts['reveal_nft_contract'][props.networkId];
     const currentNftContract = new caver.klay.Contract(ERC721, CURRENT_NFT_CONTRACT_ADDRESS);
     const revealContract = new caver.klay.Contract(REVEAL_ABI, REVEAL_CONTRACT_ADDRESS);
-
     // const revealNftContract = new caver.klay.Contract(PAUSABLE_NFT, REVEAL_NFT_CONTRACT_ADDRESS);
 
     function tokenIdCheck() {
@@ -45,27 +44,27 @@ function LarvaNFTReveal(props) {
     }
 
     async function approveCheck() {
-        const approveAddress = await currentNftContract.methods.isApprovedForAll(props.accounts[0], REVEAL_CONTRACT_ADDRESS).call().then(rs => {
-            if (rs) {
-                return REVEAL_CONTRACT_ADDRESS;
-            } else {
-                return false;
-            }
+
+        const approveAddress = await currentNftContract.methods.getApproved(tokenId).call().then(e => {
+            return e;
         });
         return approveAddress
     }
 
     async function approveWallet() {
+        if (!tokenIdCheck()) {
+            return false;
+        }
         try {
             const approveAddress = await approveCheck();
             if (REVEAL_CONTRACT_ADDRESS === approveAddress.toString().toLowerCase()) {
                 setApproveStatus(true);
             } else {
-                const gasLimit = await currentNftContract.methods.setApprovalForAll(REVEAL_CONTRACT_ADDRESS, true).estimateGas({
+                const gasLimit = await currentNftContract.methods.approve(REVEAL_CONTRACT_ADDRESS, tokenId).estimateGas({
                     from: props.accounts[0],
                 })
                 const gasPrice = await caver.rpc.klay.getGasPrice();
-                const approve = await currentNftContract.methods.setApprovalForAll(REVEAL_CONTRACT_ADDRESS, true).send({
+                const approve = await currentNftContract.methods.approve(REVEAL_CONTRACT_ADDRESS, tokenId).send({
                     from: props.accounts[0],
                     gas: gasLimit,
                     gasPrice,
@@ -90,27 +89,7 @@ function LarvaNFTReveal(props) {
             setTokenId(e.target.value);
         }
     }
-    async function nftRevealCheck() {
-        if (!tokenIdCheck()) {
-            return false;
-        }
-        const ownerAddress = await currentNftContract.methods.ownerOf(tokenId).call().then(rs => {
-            console.log(rs);
-            if (rs == props.accounts[0]) {
-                return true;
-            } else {
-                return false;
-            }
-        });
-        console.log(ownerAddress);
-        // 오너가 맞다면
-        if(ownerAddress){
-            setShowRevealModal(true);
-        } else {
-            setAlerts("NFT not owned");
-            setShowAlertModal(true);
-        }
-    }
+
     async function nftReveal() {
         if (!tokenIdCheck()) {
             return false;
@@ -172,11 +151,11 @@ function LarvaNFTReveal(props) {
         // } else{
         //     setShowPopupModal(false);
         // }
-    }, [])
+    }, []);
 
-    // useEffect(() => {
-    //     setApproveStatus(false);
-    // }, [tokenId]);
+    useEffect(() => {
+        setApproveStatus(false);
+    }, [tokenId]);
     return (
         <>
             <section className={styles.reveal_nft}
@@ -189,7 +168,7 @@ function LarvaNFTReveal(props) {
                         approveStatus === false ? (
                             <button onClick={() => approveWallet()} className={styles.reveal_btn}>APPROVE</button>
                         ) : (
-                            <button onClick={() => nftRevealCheck()}
+                            <button onClick={() => setShowRevealModal(true)}
                                     className={styles.reveal_btn}>EXCHANGE!</button>
                         )
                     ) : (
