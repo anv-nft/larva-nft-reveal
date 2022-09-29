@@ -5,6 +5,7 @@ import LoadingModal from "../../loading_modal/LoadingModal"
 import styles from "./LarvaNFTReveal.module.scss"
 import backgroundImg from "../../../assets/images/body_bg.jpg";
 import titleImg from "../../../assets/images/mv_title_reveal.png";
+import {ERC721} from "../../../utils/abi/ERC721";
 import {PAUSABLE_NFT} from "../../../utils/abi/PAUSABLE_NFT";
 import {REVEAL_ABI} from "../../../utils/abi/REVEAL_ABI";
 import {contracts} from "../../../utils/web3/contracts";
@@ -28,9 +29,8 @@ function LarvaNFTReveal(props) {
     const CURRENT_NFT_CONTRACT_ADDRESS = contracts['current_nft_contract'][props.networkId];
     const REVEAL_CONTRACT_ADDRESS = contracts['reveal_contract'][props.networkId];
     // const REVEAL_NFT_CONTRACT_ADDRESS = contracts['reveal_nft_contract'][props.networkId];
-    const currentNftContract = new caver.klay.Contract(PAUSABLE_NFT, CURRENT_NFT_CONTRACT_ADDRESS);
+    const currentNftContract = new caver.klay.Contract(ERC721, CURRENT_NFT_CONTRACT_ADDRESS);
     const revealContract = new caver.klay.Contract(REVEAL_ABI, REVEAL_CONTRACT_ADDRESS);
-
     // const revealNftContract = new caver.klay.Contract(PAUSABLE_NFT, REVEAL_NFT_CONTRACT_ADDRESS);
 
     function tokenIdCheck() {
