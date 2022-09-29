@@ -127,8 +127,8 @@ function LarvaNFTReveal(props) {
                 }
             } catch (e) {
                 console.log(e);
-                setAlerts(`${alertMsg}`);
             }
+            setAlerts(`${alertMsg}`);
         }
         setShowAlertModal(true);
         setTokenId("");
